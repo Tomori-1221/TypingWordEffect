@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打字机+爱心气泡动画</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6; /* 淡红色背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            height: 320px;
+            padding: 20px;
+            background-color: #ffffff; /* 白色文本区域 */
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            overflow: auto;
+            position: relative;
+        }
+        #text {
+            font-size: 18px;
+            white-space: pre-wrap;
+            display: inline-block;
+        }
+        #cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: black;
+            animation: blink 0.6s infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            color: red;
+            opacity: 0;
+            animation: floatUp 4s ease-in-out forwards;
+        }
+        @keyframes floatUp {
+            0% { bottom: 0; opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { bottom: 100vh; opacity: 0; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="text"><span id="cursor"></span></div>
+    </div>
+
+    <script>
+        const content = `世间人潮汹涌，而我唯独在这片网络的交汇处，寻得一缕属于你的光。
+你像风，轻轻拂过我独处的时光，却又温柔地停留，给予我陪伴；
+你像晨曦，在我最黯淡的日子里洒下微光，与我一同迎接每一个新的黎明。
+我们都曾穿行于困境之中，携手走过那些无人问津的低谷，彼此成为夜色里最亮的星。
+你喜欢的歌，我也听；你沉迷的故事，我亦共鸣。
+那些微小而美好的契合，让我愈加笃定，我们的相遇，不是偶然，而是命运精心编织的一场奇迹。
+如今，时光缓缓流转，而我仍愿站在你的身旁，陪你看漫天星辰，
+听四季流转，走过未来每一寸光阴。若你愿意，我们便一起，
+将此刻的温柔，延续成永远。`;
+
+        let i = 0;
+        function typeEffect() {
+            if (i < content.length) {
+                let textElement = document.getElementById("text");
+                let cursorElement = document.getElementById("cursor");
+                cursorElement.remove();
+
+                textElement.innerHTML += content.charAt(i);
+                textElement.appendChild(cursorElement);
+
+                i++;
+                setTimeout(typeEffect, 50);
+            } else {
+                document.getElementById("cursor").style.display = "none";
+                generateHearts();
+            }
+        }
+
+        function generateHearts() {
+            for (let j = 0; j < 30; j++) { // 增加爱心数量
+                setTimeout(() => {
+                    const heart = document.createElement("div");
+                    heart.classList.add("heart");
+                    heart.innerHTML = "❤️";
+                    heart.style.left = Math.random() * 100 + "vw";
+                    heart.style.animationDuration = `${2 + Math.random() * 2}s`;
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 5000); // 延长消失时间
+                }, j * 150);
+            }
+        }
+
+        typeEffect();
+    </script>
+
+</body>
+</html>
